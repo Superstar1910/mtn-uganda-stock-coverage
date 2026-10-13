@@ -11,7 +11,7 @@ Prepared 13 October 2026. Public HTML research output package. Full project-file
 - [Shareholder rights analysis](docs/ownership.html)
 - [Substack article index](docs/substack.html)
 
-GitHub's file viewer shows HTML source. Enable GitHub Pages with **GitHub Actions** as the publishing source to render the reports as web pages. The included Pages workflow deploys reviewed main-branch changes. No rendered URL is claimed until deployment succeeds.
+**[Read the rendered HTML analysis](https://legesi.xyz/mtn-uganda-stock-coverage/)**. GitHub Pages is enabled and the deployment is verified. The included Pages workflow publishes main-branch changes.
 
 ## Published foundations
 
