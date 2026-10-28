@@ -17,8 +17,12 @@ jobs:
         run: python scripts/refresh_substack.py
       - name: Render updated article index
         run: python scripts/build_reports.py
+      - name: Validate canonical export and compatibility redirects
+        run: python scripts/validate_routes.py
       - uses: actions/upload-artifact@v4
         with:
           name: substack-index-for-review
-          path: docs/
+          path: |
+            docs/
+            canonical/
           retention-days: 30

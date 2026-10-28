@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-DOCS = ROOT / 'docs'
+DOCS = ROOT / 'canonical'
 ARTICLES = [
     {'title': 'The Untold Story behind Africa’s Most Valuable Fintech Spinout', 'url': 'https://legesi.substack.com/p/the-untold-story-behind-africas-most', 'role': 'Original fintech and sum-of-the-parts thesis', 'date': '2025-05-07'},
     {'title': 'The Illusion of Ownership: What MTN Uganda’s MoMo Restructure Means for Investors', 'url': 'https://legesi.substack.com/p/the-illusion-of-ownership-what-mtn', 'role': 'Minority rights and value-realisation risk', 'date': '2025-06-16'},
@@ -27,7 +27,7 @@ def build():
     body = '''<h2>Ownership is a valuation input</h2><p>The June 2025 article challenges whether indirect exposure preserves meaningful shareholder rights. Its description of a proposed restructuring is historical evidence of the author’s concern, not proof of the structure implemented today.</p><p>Coverage must distinguish a proposal, shareholder approval, regulatory approval, legal completion and distributions actually received. Each transition needs dated evidence.</p><table><tr><th>Question</th><th>Evidence required</th><th>Investor consequence</th></tr><tr><td>Who holds the claim?</td><td>Final transaction documents, trust deed and entitlement register</td><td>Determines whether a current buyer receives fintech participation.</td></tr><tr><td>Can investors see the economics?</td><td>Reporting obligations and published FinCo accounts</td><td>Determines confidence in earnings and cash-flow valuation.</td></tr><tr><td>Who decides distributions?</td><td>Dividend terms, trustee powers and governance documents</td><td>Changes payout assumptions and timing risk.</td></tr><tr><td>Can the claim be diluted?</td><td>Issuance terms and pre-emption protections</td><td>Changes attributable value.</td></tr><tr><td>Can the investor exit?</td><td>Transfer provisions, redemption terms and binding listing commitments</td><td>Changes liquidity and realisation assumptions.</td></tr></table><h2>Modelling consequence</h2><p>A telecom share and a separate trust entitlement may require distinct valuations. Do not automatically attach legacy fintech rights to shares purchased after a qualifying record date. Model access, distributions and exit according to the verified instrument terms.</p><h2>Published foundation</h2>'''+refs()
     (DOCS/'ownership.html').write_text(page('Can the shareholder capture the Gem?', 'Governance, economic rights and liquidity determine how operating value translates into investable value.',body),encoding='utf-8')
     extra = []
-    cache=DOCS/'substack-articles.json'
+    cache=ROOT/'docs/substack-articles.json'
     if cache.exists():
         extra=json.loads(cache.read_text()).get('articles',[])
     seen={a['url'] for a in ARTICLES}
@@ -36,4 +36,15 @@ def build():
     (DOCS/'substack.html').write_text(page('The published articles behind the coverage', 'Follow the argument from fintech value to minority rights and embedded optionality.',body),encoding='utf-8')
     (DOCS/'article-register.json').write_text(json.dumps(ARTICLES,ensure_ascii=False,indent=2),encoding='utf-8')
 
-if __name__=='__main__': build()
+def publish_legacy_redirects():
+    """Keep old Pages links working; canonical pages are published by legesi.xyz."""
+    legacy=ROOT/'docs';legacy.mkdir(exist_ok=True)
+    for name in ['index.html','valuation.html','ownership.html','substack.html']:
+        slug='' if name=='index.html' else name[:-5]+'/'
+        target='/work/mtn-uganda-stock-coverage/'+slug
+        doc=f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page moved — Legesi.xyz</title><link rel="canonical" href="https://legesi.xyz{target}"><meta http-equiv="refresh" content="0;url={target}"></head><body><p>This page has moved. <a id="redirect-target" href="{target}">Continue to Legesi.xyz →</a></p><script src="/static/js/url-redirect.js"></script></body></html>'''
+        (legacy/name).write_text(doc,encoding='utf-8')
+
+if __name__=='__main__':
+    build()
+    publish_legacy_redirects()
