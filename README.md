@@ -41,3 +41,18 @@ Add the full project source inventory, normalized financials, source-to-model re
 ## Publication terms
 
 General information, not personalized investment advice or an issuer-endorsed report. Author research and publication rights remain with Kenneth Legesi; third-party source rights remain with their owners. No third-party filings are redistributed in this package.
+
+## Canonical public URLs
+
+Reader-facing coverage is published at https://legesi.xyz/work/mtn-uganda-stock-coverage/
+by the main website repository. This repository remains the research source.
+`python scripts/build_reports.py` exports the four full HTML reports to `canonical/`
+for review/import and writes compatibility redirects to `docs/`. The export is
+ignored by git and never uploaded as the Pages root.
+
+After reviewing changes, import the export into the main-site repository using
+`python scripts/import_mtn_coverage.py /path/to/this-checkout`, build and deploy
+the main site first, then deploy this repository's redirect update. Existing
+`.html` links continue to the corresponding directory-style canonical page.
+Shared redirect JavaScript preserves query strings and anchors. GitHub Pages
+serves page-based redirects, not custom HTTP 301/308 rules.
